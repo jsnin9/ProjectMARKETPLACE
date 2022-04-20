@@ -1,0 +1,4 @@
+identifiant;dateCommande;idClient;idLivreur;idProduitsTab;etatSolde;livree;livraison_maion;pret
+com0;19/04/2022 23:51:11;indv3;null;[prd18];true;false;false;false
+com1;19/04/2022 23:51:11;indv3;null;[prd18];true;false;false;false
+com2;20/04/2022 00:56:00;indv3;null;[PP144];false;false;false;false

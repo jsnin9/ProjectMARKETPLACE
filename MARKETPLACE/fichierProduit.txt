@@ -1,0 +1,20 @@
+identifiant;nom;prix;categorie;tempsEstimation;idVendeur;description
+prd0;Iphone13;499.99;Telephone;7jours;indv1;Bon état
+CF004;percussion base;315.0;Perceuse;null;null;null
+CF006;percussion medium;449.0;Perceuse;null;null;null
+CF009;percussion premium;499.0;Perceuse;null;null;null
+CG066;Perceuse-visseuse sans fil;177.5;null;null;null;null
+F10;Feu Tricolore;1024.0;null;null;null;null
+MP220;Disqueuse basique;199.0;null;null;null;null
+MP311;Disqueuse premium;239.0;null;null;null;null
+MP401;piqueur medium;2290.0;Marteau;null;null;null
+MP411;piqueur premium;2690.0;Marteau;null;null;null
+P05;Pancarte Travaux;133.0;null;null;null;null
+PE105;Boîte de tournevis;280.0;null;null;null;null
+PE85;Boiîte à outils;2650.0;null;null;null;null
+PP105;Pelle;11.0;null;null;null;null
+PP144;Pioche;20.0;null;null;null;null
+RA115;Boite de rallonges;990.0;null;null;null;null
+SI110;Silencieux pour MP;800.0;null;null;null;null
+VP42;Veste protection;55.0;fluo;null;null;null
+prd18;Verre;75.3;Recipient;15jours;indv1;Ancien

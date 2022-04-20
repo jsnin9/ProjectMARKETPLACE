@@ -1,0 +1,4 @@
+identifiant;idVendeur;dateDebut;dateFin;etat
+cnt0;indv0;08/05/2022;17/11/2023;true
+cnt1;indv1;15/06/2022;10/02/2024;true
+cnt2;indv2;05/04/2021;13/09/2023;true

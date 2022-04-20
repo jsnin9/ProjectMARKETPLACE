@@ -1,0 +1,365 @@
+
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.Scanner;
+
+public class Client extends Membre {
+	
+	
+	/*attributs non "satatic"*/
+	
+	private String idClient;
+	
+	Client(String nom, String prenom, String adresse, String telephone, String email, String pseudo, String password, String statut, String type){
+		
+        super(nom, prenom, adresse, telephone, email, pseudo, password,statut, type );
+        this.idClient = super.getIdIndividu();
+    }
+	
+	
+	/*surcharge*/
+	
+	Client(String idft, String nom, String prenom, String adresse, String telephone, String email, String pseudo, String password, String statut, String type){
+		
+        super(idft, nom, prenom, adresse, telephone, email, pseudo, password,statut, type);
+        this.idClient = super.getIdIndividu();
+    }
+	
+	/*attributs  "satatic"*/
+
+
+	private static ArrayList<Client> allClient = new ArrayList<Client>(); /*tableau de tous les clients*/
+
+	
+	public static void addClient(Client c) {
+		allClient.add(c);
+	}
+	
+	public static Client getClient(int indice) {
+		return allClient.get(indice);
+	}
+	
+	public static int getNbClient() {
+		return allClient.size();
+	}
+	
+	
+	/*methodes non "static"*/
+	
+	public String getIclient() {
+		return idClient;
+	}
+	
+		
+	public static int sidentifier(String psd, String pwd) {
+			
+			int p = 0;
+			int test = 1;
+			
+			try {
+				while (test == 1) {
+					
+					Client v = Client.getClient(p);
+					
+					if (v.getPseudo().equals(psd) && v.getPassword().equals(pwd)) {
+						test = 0;
+					}
+					
+					p++;
+				}
+				
+			}
+			catch(IndexOutOfBoundsException e) {
+				
+				System.out.println("\nAucun compte ne correspond à ces coordonnées");
+			}
+			
+			return p-1;
+	    }
+	
+	
+		
+	void consulterCommande() {
+	    	
+	    	try {
+	    		
+	    		Scanner sc = new Scanner(System.in);
+	    		
+	    		super.verif();
+	    		
+	    		ArrayList<Commande> ListCommande = new ArrayList<>();
+	    		
+	    		int tail_com = Commande.getNbCommande();
+	    		
+	    		for (int i = 0; i < tail_com ; i++) {
+	    			
+	    			Commande com = Commande.getCommande(i);
+	    			
+	    			if (com.getIdClient().equals(idClient)) {
+	    				
+	    				ListCommande.add(com);
+	    			}
+	    		}
+	    		
+	    		int tail = ListCommande.size();
+	    		
+	    		if (tail > 0) {
+	   
+	    			System.out.println("\nVoici la liste de toutes vos commandes\n");
+	    			
+	    			for (int j = 1; j <= tail; j++) {
+	    				
+	    				Commande pj = ListCommande.get(j-1);
+		    			ArrayList<String> idProduitJ = pj.getTabIdProduit();	    				
+		    			System.out.println("\n---> Commande n°"+j+" | soldé : "+ pj.getetatSolde() + "  |livree : "+ pj.getLivree()+"\n");
+
+	    				float som = 0;
+
+	    				
+		    			for (int p = 0; p < idProduitJ.size(); p++) {
+	    					//System.out.println(idProduitJ.get(p));
+
+		    				int test = 1;
+		    				int cmp = 0;
+		    				
+		    				while ((test == 1) & (cmp < Produit.getNbProduit())) {
+		    					
+		    					Produit prd = Produit.getProduit(cmp);
+
+		    					//System.out.println(prd.getIdProduit());
+		    					//System.out.println(idProduitJ.get(p));
+	    						//test = 0;
+
+		    					if (idProduitJ.get(p).equals(prd.getIdProduit())) {
+		    						
+		    						float prix = prd.getPrix();
+		    						som += prix;
+		    						
+		    						System.out.println("     "+(p+1)+")"+prd.getNom()+"  |  "+prix+"euros");
+
+		    						test = 0;
+		    					}
+		    					cmp++;
+		    				}
+		    			}
+		    			
+		    			System.out.println("\n   TOTAL COMMANDE = "+som+"euros");
+	    			}
+	    			
+	    			System.out.println("\n\nVoulez vous validez une commande : \n--> oui : 1\n---> non : 2");
+	    			int choix = Integer.parseInt(sc.nextLine());
+	    			
+	    			if(choix == 1) {
+	    				
+	    				System.out.println("laquelle ?");
+    					int choice = Integer.parseInt(sc.nextLine());
+    					int o = 0;
+    					int t = 1;
+    					
+    					while((o < tail_com) & (t == 1)) {
+    						
+    						Commande cm = ListCommande.get(choice-1);
+    						
+    						if(cm.getIdCommande().equals(Commande.getCommande(o).getIdCommande())) {
+    							
+    							cm.setEtatSolde(true);
+    							Commande.remplacer(o, cm);    /*On fait passer la commande en payer*/
+    							t = 0;
+    						}
+    						o++;
+    					}
+	    			}			    		
+	    		}
+	    		
+
+	    		else {
+	    			System.out.println("Vous n'avez aucune commande");
+	    		}
+	    	}
+	    	
+	    	catch(NosExceptions e ){
+	    		System.out.println("oups petite erreur, reesayez !");	
+	    	}	    	
+	    }
+    
+    
+    
+    
+    
+    public void faireUneCommande(){
+    	
+    	try {
+    		super.verif();
+    		
+
+    		
+    		ArrayList<String> idProduits = new ArrayList<String>();
+    		
+    		@SuppressWarnings("resource")   /*qu'est ce que c'est*/
+			Scanner sc = new Scanner(System.in);
+    		
+    		
+    		int veutCommander = 1;
+    		
+    		while(veutCommander == 1) {  		
+    			
+       		    Produit.AfficherProduitDisponible();
+
+	    		System.out.println("\nNom du produit : ");
+	    		String nom = sc.nextLine();
+	    		
+	    		ArrayList<Produit> tabPrd = new ArrayList<>();
+	    		
+	    		
+	    		for (int i = 0; i < Produit.getNbProduit(); i++) {
+	
+	    			Produit p = Produit.getProduit(i);
+	    			
+	    			if ((p.getNom().equals(nom)) && (p.getVendu() == false) ) {
+	    				tabPrd.add(p);
+	    				p.setVendu(true);;
+	    				Produit.remplacer(i, p);			/* mettre le produit en vendu*/
+	    			}
+	    			
+	    		}
+	    		
+	    		if (tabPrd.size() > 0) {
+		    		
+		    		ArrayList<Produit> newTabPrd = Produit.triTableau(tabPrd);
+		    		
+		    		
+		    		for (int i = 1; i <= newTabPrd.size(); i++) {
+		    			System.out.println("   "+i+")"+" "+newTabPrd.get(i-1).getNom()+" : "+newTabPrd.get(i-1).getPrix()+" euros");
+		    		}
+		    		
+		    		System.out.println("\nChoisissez le n° de produit que vous souhaitez");
+		    		int choix  = Integer.parseInt(sc.nextLine());
+		    		
+		    		String id = newTabPrd.get(choix-1).getIdProduit();
+		    		
+		    		idProduits.add(id);
+		    		
+		    		int q = 0;
+		    		int disponible = 1;
+		    		
+		    		
+		    		while((q < Produit.getNbProduit()) && (disponible == 1)) {
+		    			
+		    			Produit p = Produit.getProduit(q);
+		    			
+		    			if (p.getIdProduit().equals(id)) {
+		    				
+		    				p.setVendu(true);
+		    				disponible = 0;
+		    			}
+		    			q = q+1;	
+		    		}
+	    		}
+	    		else {
+	    			
+		    		System.out.println("\n---> Aucun produit ne correspond à ce nom ! ");
+	    		}
+	    		
+	    		
+	    		System.out.println("\n---> Si vous voulez un autre produit : tapez sur 1\n---> Sinon : tapez sur 2");
+	    		int choix = Integer.parseInt(sc.nextLine());
+	    		
+	    		
+	    		
+	    		
+	    		if (choix != 1) {
+	    			
+	    			if (idProduits.size() > 0) {
+	    			SimpleDateFormat s = new SimpleDateFormat("dd/MM/yyyy HH:mm:ss" );
+	    			Date d = new Date();
+	    					
+	    			
+	    			
+	    			System.out.println("\nVeuillez choisir le mode de livraison\n---> Maison : tapez 1\n---> Point rélais : tapez 2");
+		    		choix = Integer.parseInt(sc.nextLine());
+		    		Boolean bool;
+		    		
+		    		if (choix == 1) {
+		    			 bool = true;
+		    		}
+		    		else {
+		    			bool = false;
+		    		}
+		    		
+	    			Commande cmd = new Commande(s.format(d), idClient, null, idProduits, false, false, bool, false);
+	    			Commande.addCommande(cmd);
+	    			System.out.println("\n\nVeuillez validez votre commande dans l'espace dédié\nNous vous remercions!");
+	    			}
+	    				
+	    			veutCommander = 0;
+	    		}
+	    			
+    		}
+
+    		
+    	}
+    	
+    	catch(NosExceptions e) {
+    		System.out.println("n'importe quoi"); /*il y a d'autres exceptions à voir*/
+    	}
+    }
+    
+    
+    
+    /*methode "static"*/
+
+	
+	public static void seCreerUnCompte() throws NosExceptions {  /*try catch*/
+		
+		Scanner sc = new Scanner(System.in);
+		
+		System.out.println("\nDébut de la crétion du compte client");
+
+		System.out.println("\nEntrez votre nom");
+		String nom = sc.nextLine();
+		
+		System.out.println("Entrez votre prenom");
+		String prenom = sc.nextLine();
+		
+		System.out.println("Entrez votre adresse");
+		String adresse = sc.nextLine();
+		
+		System.out.println("Entrez votre du telephone");
+		String telephone = sc.nextLine();
+		
+		System.out.println("Entrez votre email");
+		String email = sc.nextLine();
+		
+		System.out.println("Quel type de client souhaitez vous être?\nParituclier ---> 1\nProfessionel --->2");
+		
+		String type = sc.nextLine();
+		NosExceptions.verifChamp(type);
+		
+		int choix = Integer.parseInt(type);
+		if(choix == 1) {
+			type = "Particulier";
+		}
+		else {
+			type = "Professionel";
+		}
+
+		
+		System.out.println("Entrez votre pseudo");
+		String pseudo = sc.nextLine();
+		
+		System.out.println("Entrez votre password");
+		String password = sc.nextLine();
+		
+		Client c  = new Client(nom, prenom, adresse, telephone, email, pseudo, password, "Client", type);
+		Client.addClient(c);
+		
+		System.out.println("\nVotre compte a bien été créé!");	
+		
+	}
+	
+	
+	
+	
+	
+}

@@ -1,0 +1,6 @@
+identifiant;nom;prenom;adresse;telephone;email;pseudo;password;statut;type
+indv0;jack;stone;Paris;0648752196;jackstone5@yahoo.fr;jsnin9;okx1;Vendeur;Particulier
+indv1;gis;mis;Marseille;0685129573;gismis37@outlook.fr;gis.com;zik74x;Vendeur;Professionel
+indv2;napo;chicaya;Lille;0725498136;napo.chicaya1@gmail.com;napoleaonfrst;zur42p;Vendeur;Professionel
+indv3;sharon;badou;Angers;0652597430;sharon.baou1@gmail.com;sharon7;asz4gl;Client;Professionel
+indv4;aurelie;konate;Rennes;0618725041;konate.aurelie7@hotmail.fr;javafx;1137pm;Client;Professionel
